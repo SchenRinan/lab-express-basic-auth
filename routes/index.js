@@ -6,7 +6,13 @@ const User = require('../models/User.model');
 //To eliminate redundancy and to simulate what I always see in FB, I decided to move /main to homepage ('/')
 //and simply add a private page
 router.get("/", (req, res, next) => {
-  res.render("index");
+  console.log(req.session)
+  if(req.session.currentUser){
+    res.render("index", {loggedIn: true});
+  }
+  else {
+    res.render("index")
+  }
 });
 
 router.post("/", (req, res, next) => {
@@ -18,7 +24,10 @@ router.post("/", (req, res, next) => {
     if (!userInside){res.render('index', {inform: 'Username does not exist'})}
     else if(!bcrypt.compareSync(req.body.password, userInside.password)){
         res.render('index', {inform: 'Password is incorrect', user: userInside})}
-    else {res.render('index', {inform: 'Password is correct', user: userInside, loggedIn: true})}
+    else {
+      req.session.currentUser = userInside;
+      res.render('index', {inform: 'Password is correct', user: userInside, loggedIn: true})
+    }
   })
 });
 
