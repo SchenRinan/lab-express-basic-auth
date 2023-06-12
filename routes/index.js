@@ -1,7 +1,5 @@
 const router = require("express").Router();
 const bcrypt = require('bcryptjs');
-const saltRounds = 10;
-const salt = bcrypt.genSaltSync(saltRounds);
 const User = require('../models/User.model');
 
 /* GET home page */
@@ -12,12 +10,16 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-  const hashpassword = bcrypt.hashSync(req.body.password, salt);
-  User.create({
-    username: req.body.username,
-    password: hashpassword,
+  console.log('SESSION =====> ', req.session);
+  User.findOne({
+    username: req.body.username
   })
-  .then(() => res.redirect(`/profile/${req.body.username}`))
+  .then((userInside) => {
+    if (!userInside){res.render('index', {inform: 'Username does not exist'})}
+    else if(!bcrypt.compareSync(req.body.password, userInside.password)){
+        res.render('index', {inform: 'Password is incorrect', user: userInside})}
+    else {res.render('index', {inform: 'Password is correct', user: userInside, loggedIn: true})}
+  })
 });
 
 module.exports = router;
