@@ -1,7 +1,15 @@
 {{#if loggedIn}}
-<h1><a href="/main">Main</a></h1>
-<h1><a href="/private">Private</a></h1>
-<h1>Log Out</h1>
+<ul>
+    <li><a href="/main">Main</a></li>
+    <li><a href="/private">Private</a></li>
+    <li>
+        <form action="/logout" method="post">
+        <input type="submit" value="Logout">
+        </form>
+    </li>
+</ul>
+
+<h3>Welcome {{user.username}}</h3>
 
 {{else}}
 <h1>{{title}}</h1>

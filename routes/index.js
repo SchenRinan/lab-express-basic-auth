@@ -2,13 +2,9 @@ const router = require("express").Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/User.model');
 
-/* GET home page */
-//To eliminate redundancy and to simulate what I always see in FB, I decided to move /main to homepage ('/')
-//and simply add a private page
 router.get("/", (req, res, next) => {
-  console.log(req.session)
   if(req.session.currentUser){
-    res.render("index", {loggedIn: true});
+    res.render("index", {user: req.session.currentUser, loggedIn: true});
   }
   else {
     res.render("index")
@@ -16,7 +12,6 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-  console.log('SESSION =====> ', req.session);
   User.findOne({
     username: req.body.username
   })
