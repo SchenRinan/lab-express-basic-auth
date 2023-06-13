@@ -1,17 +1,4 @@
-{{#if loggedIn}}
-<ul>
-    <li><a href="/main">Main</a></li>
-    <li><a href="/private">Private</a></li>
-    <li>
-        <form action="/logout" method="post">
-        <input type="submit" value="Logout">
-        </form>
-    </li>
-</ul>
-
-<h3>Welcome {{user.username}}</h3>
-
-{{else}}
+{{#unless loggedIn}}
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
 <form action="/" method="post">
@@ -26,7 +13,7 @@
 </h5>
 
 <h2><a href="/signup">Sign Up</a></h2>
-{{/if}}
+{{/unless}}
 
 {{!-- add a welcome when signed in --}}
 {{!-- remove sign in and log in when logged in --}}
